@@ -89,7 +89,7 @@ const ThermalPaper: React.FC<ThermalPaperProps> = ({ color, children, className 
         preserveAspectRatio="none" 
         viewBox="0 0 1 1"
       >
-        <polygon points={SAWTOOTH_POINTS} fill={color} />
+        <polygon points={SAWTOOTH_POINTS} fill={color} filter="url(#kraft-paper-noise)" />
       </svg>
       <div className="relative z-10 w-full h-full flex flex-col items-center">
         {children}
@@ -343,6 +343,17 @@ const App: React.FC = () => {
       onMouseLeave={handleMouseUp}
     >
       <GlobalStyles />
+      
+      {/* SVG Filters Definition */}
+      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+        <defs>
+          <filter id="kraft-paper-noise">
+            <feTurbulence type="fractalNoise" baseFrequency="128" numOctaves="3" result="noise" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.1 0" in="noise" result="fadedNoise" />
+            <feBlend in="SourceGraphic" in2="fadedNoise" mode="multiply" />
+          </filter>
+        </defs>
+      </svg>
 
       {/* Header - Moved back to top-10 for correct positioning */}
       <div className="absolute top-10 left-0 right-0 text-center pointer-events-none z-0">
